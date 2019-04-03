@@ -12,19 +12,13 @@ import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
     {
-        path: '',
-        component: HomeComponent,
-        canActivate: [AuthGuard],
-        children: [
-            {
-                path: '',
-                component: SigninComponent,
-            },
-            {
-                path: 'signup',
-                component: SignupComponent,
-            },
-        ]
+        path:'',
+        pathMatch:'full',
+        redirectTo:'home'
+    },
+    {
+        path: 'home',
+        loadChildren:'./home/home.module#HomeModule'
     },
     { 
         path: 'user/:userName', 
