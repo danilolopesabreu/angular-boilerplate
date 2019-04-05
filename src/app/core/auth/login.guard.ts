@@ -4,7 +4,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class AuthGuard implements CanActivate{
+export class LoginGuard implements CanActivate{
     
     constructor(private userService: UserService,
         private router: Router) {}
@@ -13,9 +13,9 @@ export class AuthGuard implements CanActivate{
         boolean | 
         Observable<boolean> |
         Promise<boolean> {
-            console.log('Requires guard')
-            if(!this.userService.isLogged()){
-                this.router.navigate([''])
+            console.log('guarda de rota')
+            if(this.userService.isLogged()){
+                this.router.navigate(['user', this.userService.getUserName()])
                 return false;
             }
             return true;
