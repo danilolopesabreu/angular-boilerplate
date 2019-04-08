@@ -4,6 +4,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-photo-comments',
@@ -32,5 +33,17 @@ export class PhotoCommentsComponent implements OnInit {
           ])]
       });            
   }
+
+  save(){
+    const comment = this.commentForm.get('comment').value as string;
+    this.comments$ = this.photoService
+      .addComment(this.photoId, comment)
+      .pipe(switchMap(() => this.photoService.getComments(this.photoId)))
+      .pipe(tap(() => {
+        this.commentForm.reset();
+      }))
+  }
+
+  
 
 }
