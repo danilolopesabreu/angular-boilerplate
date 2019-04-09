@@ -6,10 +6,11 @@ import { RouterModule } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptor } from './auth/request.interceptor';
 import { FooterComponent } from './footer/footer.component';
+import { LoadingModule } from '../shared/components/loading/loading.module';
 
 @NgModule({
   imports: [
-    CommonModule,RouterModule, AlertModule
+    CommonModule,RouterModule, AlertModule,LoadingModule
   ],
   declarations: [ HeaderComponent, FooterComponent ],
   exports:[HeaderComponent,FooterComponent],
