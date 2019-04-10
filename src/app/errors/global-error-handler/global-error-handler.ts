@@ -1,3 +1,4 @@
+import { environment } from 'src/environments/environment';
 import { ServerLogService } from './server-log.service';
 import { UserService } from './../../core/user/user.service';
 import { ErrorHandler, Injectable, Injector } from "@angular/core";
@@ -23,7 +24,7 @@ export class GlobalErrorHandler implements ErrorHandler{
 
         const message = error.message ? error.message : error.toString();
 
-        router.navigate(['/error']);
+        environment.production ? router.navigate(['/error']) : '';
         
         stacktrace
             .fromError(error)
@@ -38,7 +39,7 @@ export class GlobalErrorHandler implements ErrorHandler{
                 userName:userService.getUserName(), 
                 stack:stackAsString
             }).subscribe(
-                () => console.log('Error logged on server'),
+                () => console.log('Error logged on server', message),
                 err => {
                     console.log(err);
                     console.log('fail to send error log to server')

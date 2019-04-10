@@ -15,7 +15,14 @@ export class AuthGuard implements CanActivate{
         Promise<boolean> {
             console.log('Requires guard')
             if(!this.userService.isLogged()){
-                this.router.navigate([''])
+                this.router.navigate(
+                    [''],
+                    {
+                        queryParams:{
+                            fromUrl:state.url
+                        }
+                    }
+                )
                 return false;
             }
             return true;

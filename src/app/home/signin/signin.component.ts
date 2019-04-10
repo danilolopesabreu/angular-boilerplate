@@ -2,7 +2,7 @@ import { PlataformDetectorService } from './../../core/plataform-detector.servic
 import { AuthService } from '../../core/auth/auth.service';
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -13,15 +13,21 @@ export class SigninComponent implements OnInit {
 
   loginForm: FormGroup;
   @ViewChild('userNameInput') userNameInput: ElementRef<HTMLInputElement>;
-
+  fromUrl:string;
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router:Router,
+    private activatedRoute:ActivatedRoute,
     private plataformDetectorService:PlataformDetectorService) {console.log('SIGNIN constructor') }
 
   ngOnInit() {
     console.log('SIGNIN ngOnInit')
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.fromUrl = params['fromUrl'];
+    });
+
     this.loginForm = this.formBuilder.group({
       userName: ['', Validators.required],
       password: ['', Validators.required]
@@ -40,7 +46,11 @@ export class SigninComponent implements OnInit {
         .subscribe(
         () => {
           console.log('autenticado')
-          this.router.navigate(['user',userName]);
+          if(this.fromUrl){
+            this.router.navigateByUrl(this.fromUrl);
+          }else{
+            this.router.navigate(['user',userName]);
+          }
         },
         err => {
           console.log(err);
